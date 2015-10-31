@@ -1,24 +1,28 @@
-tabuleiroInicial([
-	[sun, empty, empty, empty, sun, empty, empty, empty, sun],
-  [empty, sun, empty, empty, empty, empty, empty, sun, empty],
-  [empty, empty, sun, empty, empty, empty, sun, empty, empty],
-  [empty, empty, empty, empty, empty, empty, empty, empty, empty],
-  [sun, empty, empty, empty, moon, empty, empty, empty, sun],
-  [empty, empty, empty, empty, empty, empty, empty, empty, empty],
-  [empty, empty, sun, empty, empty, empty, sun, empty, empty],
+%% tabuleiroInicial([
+%% 	[sun, empty, empty, empty, sun, empty, empty, empty, sun],
+%%   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
+%%   [empty, empty, sun, empty, empty, empty, sun, empty, empty],
+%%   [empty, empty, empty, empty, empty, empty, empty, empty, empty],
+%%   [sun, empty, empty, empty, moon, empty, empty, empty, sun],
+%%   [empty, empty, empty, empty, empty, empty, empty, empty, empty],
+%%   [empty, empty, sun, empty, empty, empty, sun, empty, empty],
+%%   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
+%%   [sun, empty, empty, empty, sun, empty, empty, empty, sun]]).
+
+tabuleiroIntermedio([
+  [sun, empty, empty, empty, sun, purple-flower, green-flower, green-bird, orange-bird],
+  [empty, sun, empty, empty, empty, empty, green-lizard, green-leaf, empty],
+  [empty, empty, sun, empty, red-turtle, red-leaf, green-leaf, blue-leaf, empty],
+  [empty, empty, empty, empty, blue-turtle, blue-leaf, empty, empty, empty],
+  [sun, empty, empty, yellow-turtle, green-turtle, empty, empty, empty, sun],
+  [empty, empty, yellow-lizard, yellow-dolphin, empty, empty, empty, empty, empty],
+  [empty, empty, blue-lizard, blue-dolphin, empty, empty, sun, empty, empty],
   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
   [sun, empty, empty, empty, sun, empty, empty, empty, sun]]).
 
-%% tabuleiroIntermedio([
-%%   [sun, empty, empty, empty, sun, purple_flower, green_flower, green_bird, orange_bird],
-%%   [empty, sun, empty, empty, empty, empty, green_lizard, green_leaf, empty],
-%%   [empty, empty, sun, empty, red_turtle, red_leaf, green_leaf, blue_leaf, empty],
-%%   [empty, empty, empty, empty, blue_turtle, blue_leaf, empty, empty, empty],
-%%   [sun, empty, empty, yellow_turtle, green_turtle, empty, empty, empty, sun],
-%%   [empty, empty, yellow_lizard, yellow_dolphin, empty, empty, empty, empty, empty],
-%%   [empty, empty, blue_lizard, blue_dolphin, empty, empty, sun, empty, empty],
-%%   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
-%%   [sun, empty, empty, empty, sun, empty, empty, empty, sun]]).
+%tiles([red-turtle, blue-turtle, yellow-turtle, purple-turtle, orange-turtle, red-leaf]).
+
+
 
 
 drawBoard([], _).
@@ -38,47 +42,48 @@ convertValue(empty) :- write('   ').
 convertValue(moon) :- write(' O ').
 
 
-convertValue(red_turtle) :- write('RT ').
-convertValue(blue_turtle) :- write('BT ').
-convertValue(yellow_turtle) :- write('YT ').
-convertValue(purple_turtle) :- write('PT ').
-convertValue(orange_turtle) :- write('OT ').
+convertValue(red-turtle) :- write('R +').
+convertValue(green-turtle) :- write('G +').
+convertValue(blue-turtle) :- write('B +').
+convertValue(yellow-turtle) :- write('Y +').
+convertValue(purple-turtle) :- write('P +').
+convertValue(orange-turtle) :- write('O +').
 
-convertValue(red_leaf) :- write('RL ').
-convertValue(green_leaf) :- write('GL ').
-convertValue(blue_leaf) :- write('BL ').
-convertValue(yellow_leaf) :- write('YL ').
-convertValue(purple_leaf) :- write('PL ').
-convertValue(orange_leaf) :- write('OL ').
+convertValue(red-leaf) :- write('R $').
+convertValue(green-leaf) :- write('G $').
+convertValue(blue-leaf) :- write('B $').
+convertValue(yellow-leaf) :- write('Y $').
+convertValue(purple-leaf) :- write('P $').
+convertValue(orange-leaf) :- write('O $').
 
-convertValue(red_dolphin) :- write('RD ').
-convertValue(green_dolphin) :- write('GD ').
-convertValue(blue_dolphin) :- write('BD ').
-convertValue(yellow_dolphin) :- write('YD ').
-convertValue(purple_dolphin) :- write('PD ').
-convertValue(orange_dolphin) :- write('OD ').
+convertValue(red-dolphin) :- write('R &').
+convertValue(green-dolphin) :- write('G &').
+convertValue(blue-dolphin) :- write('B &').
+convertValue(yellow-dolphin) :- write('Y &').
+convertValue(purple-dolphin) :- write('P &').
+convertValue(orange-dolphin) :- write('O &').
 
-convertValue(red_lizard) :- write('RLZ').
-convertValue(green_lizard) :- write('GLZ').
-convertValue(blue_lizard) :- write('BLZ').
-convertValue(yellow_lizard) :- write('YLZ').
-convertValue(purple_lizard) :- write('PLZ').
-convertValue(orange_lizard) :- write('OLZ').
+convertValue(red-lizard) :- write('R ~').
+convertValue(green-lizard) :- write('G ~').
+convertValue(blue-lizard) :- write('B ~').
+convertValue(yellow-lizard) :- write('Y ~').
+convertValue(purple-lizard) :- write('P ~').
+convertValue(orange-lizard) :- write('O ~').
 
-convertValue(red_flower) :- write('RF ').
-convertValue(green_flower) :- write('GF ').
-convertValue(blue_flower) :- write('BF ').
-convertValue(yellow_flower) :- write('YF ').
-convertValue(purple_flower) :- write('PF ').
-convertValue(green_turtle) :- write('GT ').
-convertValue(orange_flower) :- write('OF ').
+convertValue(red-flower) :- write('R %').
+convertValue(green-flower) :- write('G %').
+convertValue(blue-flower) :- write('B %').
+convertValue(yellow-flower) :- write('Y %').
+convertValue(purple-flower) :- write('P %').
+convertValue(green-flower) :- write('G %').
+convertValue(orange-flower) :- write('O %').
 
-convertValue(red_bird) :- write('RB ').
-convertValue(green_bird) :- write('GB ').
-convertValue(blue_bird) :- write('BB ').
-convertValue(yellow_bird) :- write('YB ').
-convertValue(purple_bird) :- write('PB ').
-convertValue(orange_bird) :- write('OB ').
+convertValue(red-bird) :- write('R #').
+convertValue(green-bird) :- write('G #').
+convertValue(blue-bird) :- write('B #').
+convertValue(yellow-bird) :- write('Y #').
+convertValue(purple-bird) :- write('P #').
+convertValue(orange-bird) :- write('O #').
 
 
 
@@ -90,7 +95,7 @@ menu:-
   write('   2. Player vs PC     '),nl,
   write('   3. Quit             '),nl,
   write('enter your choice:'), nl,
-  read(Choice), Choice > 0, Choice =< 3,
+  read(Choice), write('atao2'), nl, Choice > 0, Choice =< 3,
   doit(Choice), Choice = 3.
 
 
@@ -98,8 +103,10 @@ menu:-
 doit(1):-
   write('Player vs Player'), nl,
   drawBoardHeader,
-  tabuleiroInicial(Tab),
-  drawBoard(Tab, 0).
+  tabuleiroIntermedio(Tab),
+  drawBoard(Tab, 0), !,
+  write('atao'), nl.
+
 
 doit(2):-
   write('Player vs PC'), nl.

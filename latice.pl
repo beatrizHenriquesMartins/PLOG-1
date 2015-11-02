@@ -1,13 +1,16 @@
- tabuleiroInicial([
-	 [sun, empty, empty, empty, sun, empty, empty, empty, sun],
-   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
-   [empty, empty, sun, empty, empty, empty, sun, empty, empty],
-   [empty, empty, empty, empty, empty, empty, empty, empty, empty],
-   [sun, empty, empty, empty, moon, empty, empty, empty, sun],
-   [empty, empty, empty, empty, empty, empty, empty, empty, empty],
-   [empty, empty, sun, empty, empty, empty, sun, empty, empty],
-   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
-   [sun, empty, empty, empty, sun, empty, empty, empty, sun]]).
+:- use_module(library(random)).
+:- use_module(library(lists)).
+
+tabuleiroInicial([
+  [sun, empty, empty, empty, sun, empty, empty, empty, sun],
+  [empty, sun, empty, empty, empty, empty, empty, sun, empty],
+  [empty, empty, sun, empty, empty, empty, sun, empty, empty],
+  [empty, empty, empty, empty, empty, empty, empty, empty, empty],
+  [sun, empty, empty, empty, moon, empty, empty, empty, sun],
+  [empty, empty, empty, empty, empty, empty, empty, empty, empty],
+  [empty, empty, sun, empty, empty, empty, sun, empty, empty],
+  [empty, sun, empty, empty, empty, empty, empty, sun, empty],
+  [sun, empty, empty, empty, sun, empty, empty, empty, sun]]).
 
 tabuleiroIntermedio([
   [sun, empty, empty, empty, sun, purple-flower, green-flower, green-bird, orange-bird],
@@ -20,12 +23,39 @@ tabuleiroIntermedio([
   [empty, sun, empty, empty, empty, empty, empty, sun, empty],
   [sun, empty, empty, empty, sun, empty, empty, empty, sun]]).
 
-tiles([red-turtle, green-turtle, blue-turtle, yellow-turtle, purple-turtle, orange-turtle, 
-       red-leaf, green-leaf, blue-leaf, yellow-leaf, purple-leaf, orange-leaf, 
+tiles([red-turtle, green-turtle, blue-turtle, yellow-turtle, purple-turtle, orange-turtle,
+       red-leaf, green-leaf, blue-leaf, yellow-leaf, purple-leaf, orange-leaf,
        red-dolphin, green-dolphin, blue-dolphin, yellow-dolphin, purple-dolphin, orange-dolphin,
        red-lizard, green-lizard, blue-lizard, yellow-lizard, purple-lizard, orange-lizard,
        red-flower, green-flower, blue-flower, yellow-flower, purple-flower, orange-flower,
-       red-bird, green-bird, blue-bird, yellow-bird, purple-bird, orange-bird]).
+       red-bird, green-bird, blue-bird, yellow-bird, purple-bird, orange-bird, red-turtle, green-turtle, blue-turtle, yellow-turtle, purple-turtle, orange-turtle,
+       red-leaf, green-leaf, blue-leaf, yellow-leaf, purple-leaf, orange-leaf,
+       red-dolphin, green-dolphin, blue-dolphin, yellow-dolphin, purple-dolphin, orange-dolphin,
+       red-lizard, green-lizard, blue-lizard, yellow-lizard, purple-lizard, orange-lizard,
+       red-flower, green-flower, blue-flower, yellow-flower, purple-flower, orange-flower,
+       red-bird, green-bird, blue-bird, yellow-bird, purple-bird, orange-bird, wind, wind, wind, wind, wind, wind, wind, wind, wind, wind]).
+
+
+
+%%------------------------------%%
+%%        BARALHAR O DECK       %%
+%%------------------------------%%
+
+
+perm_aleatoria([],[]).
+perm_aleatoria(L,[E|Acc]):-
+        length(L, N),
+        random(0, N, R),
+        nth0(R, L, E),
+        list_delete(L, R, L1),
+        permutacao_aleatoria(L1, Acc).
+
+list_delete([_|L], 0, L):-
+  !.
+list_delete([X|L], N, [X|Lf]):-
+  N1 is N -1,
+  list_delete(L, N1, Lf).
+
 
 
 
@@ -157,7 +187,7 @@ menu:-
 
 
 doit(1):-
-  tabuleiroIntermedio(Tab),
+  tabuleiroInicial(Tab),
   pvpgamimg(Tab).
 
 doit(2):-
@@ -169,6 +199,10 @@ doit(3):- !.
 pvpgamimg(INITIALBOARD):-
   clearScreen(40),
   write('Player vs Player'), nl, nl,
+  tiles(Deck),
+  perm_aleatoria(Deck),
+
+
   drawTab(INITIALBOARD, 0), !,
   nl, nl,
   write('Piece to be Played:'), read(Piece), nl,
@@ -176,12 +210,12 @@ pvpgamimg(INITIALBOARD):-
   write('Column:'), read(Column), nl,
 
   %%% 1. element row; 2. element column; 3. element to use on replacement; 3. current matrix; 4. resultant matrix.
-  
+
   setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, Result),
 
   pvpgamimg(Result).
 
-  
+
 
 
 

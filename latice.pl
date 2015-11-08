@@ -85,6 +85,8 @@ convertValue(yellow-bird) :- write('Y #').
 convertValue(purple-bird) :- write('P #').
 convertValue(orange-bird) :- write('O #').
 
+convertValue(wind) :- write(' W ').
+
 %%convertValues ^
 
 %%------------------------------%%
@@ -119,19 +121,23 @@ divideDeck([Deck_Head | Deck_Tail], Deck1, [Deck2_Head | Deck2_Tail], It) :-
   divideDeck(Deck_Tail, Deck1, Deck2_Tail, It1).
 
 
-drawHand(_, _, _, 5).
-drawHand([Deck_Head | Deck_Tail], Hand, Res_Deck, It) :-
-  length(Hand, N),
-  N < 5,
-  It is N,
-  append(Hand, DeckHead, ResHand),
-  It1 is It + 1,
-  drawHand(DeckTail, ResHand, DeckTail, It1).
 
-printHand([]), _.
+getHand([Deck_Head | Deck_Tail], Res_Deck, Res_Hand, Final_Hand, Final_Deck, 4):-
+  Final_Hand = Res_Hand,
+  Final_Deck = Res_Deck.
+
+getHand([Deck_Head | Deck_Tail], Res_Deck, Res_Hand, Final_Hand, Final_Deck It):-
+  length(Res_Hand, N), !,
+  write(N),
+  append([Deck_Head], Res_Hand, New_Res_Hand),
+  getHand(Deck_Tail, Deck_Tail, New_Res_Hand, Final_Hand, Final_Deck, N).
+
+
+
+printHand([], _).
 printHand([H|T], N):-
-  write(N), write '. ',
-  convertValue(H),
+  write(N), write('. '),
+  convertValue(H), nl,
   N1 is N+1,
   printHand(T, N1).
 
@@ -231,32 +237,36 @@ doit(1):-
 doit(2):- !.
 
 initgame:-
+
   tabuleiroInicial(Tab),
   tiles(Deck),
   perm_aleatoria(Deck, Deck_Res),
   divideDeck(Deck_Res, Deck1, Deck2, 82),
-  drawHand(Hand1, Deck1, Res_Deck1, No1),
-  drawHand(Hand2, Deck2, Res_Deck2, No2),
-  pvpgamimgcicle(Tab, Res_Deck1, Res_Deck2, Hand1, Hand2, Stones1, Stones2, 0).
+  write('antesdodraw'),
+  getHand(Deck1, Res_Deck1, Res_Hand1, Final_Hand1, Final_Deck1, 0),
+  getHand(Deck2, Res_Deck2, Res_Hand2, Final_Hand2, Final_Deck2, 0), 
+  write('depoisdodraw'),
+  pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0),
+  write('initgame')
+  .
   
 
-pvpgamimgcicle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, DiscardedWind):-
+pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, DiscardedWind):-
   clearScreen(50),
   write('Player 1'), nl, nl,
 
   drawTab(INITIALBOARD, 0), !,
-  nl, nl,
+  nl, nl, 
   printHand(Hand1, 0),
 
   write('Piece to be Played:'), read(Piece), nl,
   write('Row:'), read(Row), nl,
   write('Column:'), read(Column), nl,
 
-  selectPiece(Hand1, Piece, Piece1),
-  setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, Result),
+  getListElemAt(Piece, Hand1, Piece1),
+  setMatrixElemAtWith(Row, Column, Piece1, INITIALBOARD, Result),
   
-  drawHand(Hand1, Deck1, Res_Deck1, Nmb1),
-
+  getHand()
 
   clearScreen(50),
   write('Player 2'), nl, nl,
@@ -269,7 +279,7 @@ pvpgamimgcicle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, Disca
 
   setMatrixElemAtWith(Row1, Column1, Piece1, Result, Result1),
 
-  pvpgamimgcicle(Result1).
+  pvpgamingcycle(Result1).
 
 
 

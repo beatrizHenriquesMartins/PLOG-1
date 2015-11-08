@@ -37,85 +37,6 @@ tiles([red-turtle, green-turtle, blue-turtle, yellow-turtle, purple-turtle, oran
 
 
 
-%%------------------------------%%
-%%        BARALHAR O DECK       %%
-%%------------------------------%%
-
-
-perm_aleatoria([],[]).
-perm_aleatoria(L,[E|Acc]):-
-        length(L, N),
-        random(0, N, R),
-        nth0(R, L, E),
-        list_delete(L, R, L1),
-        permutacao_aleatoria(L1, Acc).
-
-list_delete([_|L], 0, L):-
-  !.
-list_delete([X|L], N, [X|Lf]):-
-  N1 is N -1,
-  list_delete(L, N1, Lf).
-
-
-
-
-%%------------------------------%%
-%%     POUCA JORDA NA MATRIZ    %%
-%%------------------------------%%
-
-%%procurar posicao v
-
-getMatrixElemAt(0, ElemCol, [ListAtTheHead|_], Elem):-
-  getListElemAt(ElemCol, ListAtTheHead, Elem).
-getMatrixElemAt(ElemRow, ElemCol, [_|RemainingLists], Elem):-
-  ElemRow > 0,
-  ElemRow1 is ElemRow-1,
-  getMatrixElemAt(ElemRow1, ElemCol, RemainingLists, Elem).
-
-
-getListElemAt(0, [ElemAtTheHead|_], ElemAtTheHead).
-getListElemAt(Pos, [_|RemainingElems], Elem):-
-  Pos > 0,
-  Pos1 is Pos-1,
-  getListElemAt(Pos1, RemainingElems, Elem).
-
-%%procurar posicao ^
-
-%%% 1. element row; 2. element column; 3. element to use on replacement; 3. current matrix; 4. resultant matrix.
-setMatrixElemAtWith(0, ElemCol, NewElem, [RowAtTheHead|RemainingRows], [NewRowAtTheHead|RemainingRows]):-
-  setListElemAtWith(ElemCol, NewElem, RowAtTheHead, NewRowAtTheHead).
-setMatrixElemAtWith(ElemRow, ElemCol, NewElem, [RowAtTheHead|RemainingRows], [RowAtTheHead|ResultRemainingRows]):-
-  ElemRow > 0,
-  ElemRow1 is ElemRow-1,
-  setMatrixElemAtWith(ElemRow1, ElemCol, NewElem, RemainingRows, ResultRemainingRows).
-
-%%% 1. position; 2. element to use on replacement; 3. current list; 4. resultant list.
-setListElemAtWith(0, Elem, [_|L], [Elem|L]).
-setListElemAtWith(I, Elem, [H|L], [H|ResL]):-
-  I > 0,
-  I1 is I-1,
-  setListElemAtWith(I1, Elem, L, ResL).
-
-%%% 1. element to be replaced; 2. element to use on replacements; 3. current matrix; 4. resultant matrix.
-replaceMatrixElemWith(_, _, [], []).
-replaceMatrixElemWith(A, B, [Line|RL], [ResLine|ResRL]):-
-  replaceListElemWith(A, B, Line, ResLine),
-  replaceMatrixElemWith(A, B, RL, ResRL).
-
-%%% 1. element to be replaced; 2. element to use on replacements; 3. current list; 4. resultant list.
-replaceListElemWith(_, _, [], []).
-replaceListElemWith(A, B, [A|L1], [B|L2]):-
-  replaceListElemWith(A, B, L1, L2).
-replaceListElemWith(A, B, [C|L1], [C|L2]):-
-  C \= A,
-  replaceListElemWith(A, B, L1, L2).
-
-
-%%-------------------------------%%
-%% -/- POUCA JORDA NA MATRIZ -/- %%
-%%-------------------------------%%
-
-
 %% conver values v
 convertValue(sun) :- write(' * ').
 convertValue(empty) :- write('   ').
@@ -166,6 +87,125 @@ convertValue(orange-bird) :- write('O #').
 
 %%convertValues ^
 
+%%------------------------------%%
+%%        DECK/HAND  STUFF      %%
+%%------------------------------%%
+
+perm_aleatoria([], []).
+perm_aleatoria(L,[E|Acc]):-
+        length(L, N),
+        random(0, N, R),
+        nth0(R, L, E),
+        list_delete(L, R, L1),
+        perm_aleatoria(L1, Acc).
+
+list_delete([_|L], 0, L):-
+  !.
+list_delete([X|L], N, [X|Lf]):-
+  N1 is N -1,
+  list_delete(L, N1, Lf).
+
+
+divideDeck(_, _, _, 0).
+divideDeck([Deck_Head | Deck_Tail], [Deck1_Head | Deck1_Tail], Deck2, It) :-
+  It > 41,
+  Deck1_Head = Deck_Head,
+  It1 is It - 1,
+  divideDeck(Deck_Tail, Deck1_Tail, Deck2, It1).
+  
+divideDeck([Deck_Head | Deck_Tail], Deck1, [Deck2_Head | Deck2_Tail], It) :-
+  Deck2_Head = Deck_Head,
+  It1 is It - 1,
+  divideDeck(Deck_Tail, Deck1, Deck2_Tail, It1).
+
+
+drawHand(_, _, _, 5).
+drawHand([Deck_Head | Deck_Tail], Hand, Res_Deck, It) :-
+  length(Hand, N),
+  N < 5,
+  It is N,
+  append(Hand, DeckHead, ResHand),
+  It1 is It + 1,
+  drawHand(DeckTail, ResHand, DeckTail, It1).
+
+printHand([]), _.
+printHand([H|T], N):-
+  write(N), write '. ',
+  convertValue(H),
+  N1 is N+1,
+  printHand(T, N1).
+
+
+
+
+
+
+%%------------------------------%%
+%%   -/-    DECK  STUFF  -/-    %%
+%%------------------------------%%
+
+
+
+
+%%------------------------------%%
+%%            FUNCOES MATRIZ    %%
+%%------------------------------%%
+
+%%procurar posicao v
+
+getMatrixElemAt(0, ElemCol, [ListAtTheHead|_], Elem):-
+  getListElemAt(ElemCol, ListAtTheHead, Elem).
+getMatrixElemAt(ElemRow, ElemCol, [_|RemainingLists], Elem):-
+  ElemRow > 0,
+  ElemRow1 is ElemRow-1,
+  getMatrixElemAt(ElemRow1, ElemCol, RemainingLists, Elem).
+
+
+getListElemAt(0, [ElemAtTheHead|_], ElemAtTheHead).
+getListElemAt(Pos, [_|RemainingElems], Elem):-
+  Pos > 0,
+  Pos1 is Pos-1,
+  getListElemAt(Pos1, RemainingElems, Elem).
+
+%%procurar posicao ^
+
+%%% 1. element row; 2. element column; 3. element to use on replacement; 3. current matrix; 4. resultant matrix.
+setMatrixElemAtWith(0, ElemCol, NewElem, [RowAtTheHead|RemainingRows], [NewRowAtTheHead|RemainingRows]):-
+  setListElemAtWith(ElemCol, NewElem, RowAtTheHead, NewRowAtTheHead).
+setMatrixElemAtWith(ElemRow, ElemCol, NewElem, [RowAtTheHead|RemainingRows], [RowAtTheHead|ResultRemainingRows]):-
+  ElemRow > 0,
+  ElemRow1 is ElemRow-1,
+  setMatrixElemAtWith(ElemRow1, ElemCol, NewElem, RemainingRows, ResultRemainingRows).
+
+%%% 1. position; 2. element to use on replacement; 3. current list; 4. resultant list.
+setListElemAtWith(0, Elem, [_|L], [Elem|L]).
+setListElemAtWith(I, Elem, [H|L], [H|ResL]):-
+  I > 0,
+  I1 is I-1,
+  setListElemAtWith(I1, Elem, L, ResL).
+
+%%% 1. element to be replaced; 2. element to use on replacements; 3. current matrix; 4. resultant matrix.
+replaceMatrixElemWith(_, _, [], []).
+replaceMatrixElemWith(A, B, [Line|RL], [ResLine|ResRL]):-
+  replaceListElemWith(A, B, Line, ResLine),
+  replaceMatrixElemWith(A, B, RL, ResRL).
+
+%%% 1. element to be replaced; 2. element to use on replacements; 3. current list; 4. resultant list.
+replaceListElemWith(_, _, [], []).
+replaceListElemWith(A, B, [A|L1], [B|L2]):-
+  replaceListElemWith(A, B, L1, L2).
+replaceListElemWith(A, B, [C|L1], [C|L2]):-
+  C \= A,
+  replaceListElemWith(A, B, L1, L2).
+
+
+
+%%------------------------------%%
+%%  -/-   FUNCOES MATRIZ  -/-   %%
+%%------------------------------%%
+
+
+
 clearScreen(0).
 clearScreen(N):-
   nl,
@@ -177,43 +217,59 @@ clearScreen(N):-
 menu:-
   repeat,
   write('                          '),nl,
-  write('   1. Player vs Player '),nl,
-  write('   2. Player vs PC     '),nl,
+  write('   1. Play '),nl,
   write('   3. Quit             '),nl,
   write('enter your choice:'), nl,
-  read(Choice), nl, Choice > 0, Choice =< 3,
+  read(Choice), nl, Choice > 0, Choice =< 2,
   doit(Choice).
 
 
 
 doit(1):-
+  initgame.
+
+doit(2):- !.
+
+initgame:-
   tabuleiroInicial(Tab),
-  pvpgamimg(Tab).
-
-doit(2):-
-  clearScreen(40),
-  write('Player vs PC'), nl.
-
-doit(3):- !.
-
-pvpgamimg(INITIALBOARD):-
-  clearScreen(40),
-  write('Player vs Player'), nl, nl,
   tiles(Deck),
-  perm_aleatoria(Deck),
+  perm_aleatoria(Deck, Deck_Res),
+  divideDeck(Deck_Res, Deck1, Deck2, 82),
+  drawHand(Hand1, Deck1, Res_Deck1, No1),
+  drawHand(Hand2, Deck2, Res_Deck2, No2),
+  pvpgamimgcicle(Tab, Res_Deck1, Res_Deck2, Hand1, Hand2, Stones1, Stones2, 0).
+  
 
+pvpgamimgcicle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, DiscardedWind):-
+  clearScreen(50),
+  write('Player 1'), nl, nl,
 
   drawTab(INITIALBOARD, 0), !,
   nl, nl,
+  printHand(Hand1, 0),
+
   write('Piece to be Played:'), read(Piece), nl,
   write('Row:'), read(Row), nl,
   write('Column:'), read(Column), nl,
 
-  %%% 1. element row; 2. element column; 3. element to use on replacement; 3. current matrix; 4. resultant matrix.
-
+  selectPiece(Hand1, Piece, Piece1),
   setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, Result),
+  
+  drawHand(Hand1, Deck1, Res_Deck1, Nmb1),
 
-  pvpgamimg(Result).
+
+  clearScreen(50),
+  write('Player 2'), nl, nl,
+
+  drawTab(Result, 0), !,
+  nl, nl,
+  write('Piece to be Played:'), read(Piece1), nl,
+  write('Row:'), read(Row1), nl,
+  write('Column:'), read(Column1), nl,
+
+  setMatrixElemAtWith(Row1, Column1, Piece1, Result, Result1),
+
+  pvpgamimgcicle(Result1).
 
 
 
@@ -228,7 +284,7 @@ drawTitle:-
   nl.
 
 drawBoardHeader:-
-  write('   | A | B | C | D | E | F | G | H | I '), nl,
+  write('   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 '), nl,
   write('---|---|---|---|---|---|---|---|---|---|'), nl.
 
 

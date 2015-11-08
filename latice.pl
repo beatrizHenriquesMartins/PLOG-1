@@ -122,15 +122,15 @@ divideDeck([Deck_Head | Deck_Tail], Deck1, [Deck2_Head | Deck2_Tail], It) :-
 
 
 
-getHand([Deck_Head | Deck_Tail], Res_Deck, Res_Hand, Final_Hand, Final_Deck, 4):-
+getHand([Deck_Head | Deck_Tail], Res_Hand, Final_Hand, Final_Deck, 5):-
   Final_Hand = Res_Hand,
-  Final_Deck = Res_Deck.
+  Final_Deck = Deck_Tail.
 
-getHand([Deck_Head | Deck_Tail], Res_Deck, Res_Hand, Final_Hand, Final_Deck It):-
+getHand([Deck_Head | Deck_Tail], Res_Hand, Final_Hand, Final_Deck, It):-
   length(Res_Hand, N), !,
-  write(N),
+  N1 is N+1,
   append([Deck_Head], Res_Hand, New_Res_Hand),
-  getHand(Deck_Tail, Deck_Tail, New_Res_Hand, Final_Hand, Final_Deck, N).
+  getHand(Deck_Tail, New_Res_Hand, Final_Hand, Final_Deck, N1).
 
 
 
@@ -140,9 +140,6 @@ printHand([H|T], N):-
   convertValue(H), nl,
   N1 is N+1,
   printHand(T, N1).
-
-
-
 
 
 
@@ -242,49 +239,101 @@ initgame:-
   tiles(Deck),
   perm_aleatoria(Deck, Deck_Res),
   divideDeck(Deck_Res, Deck1, Deck2, 82),
-  write('antesdodraw'),
-  getHand(Deck1, Res_Deck1, Res_Hand1, Final_Hand1, Final_Deck1, 0),
-  getHand(Deck2, Res_Deck2, Res_Hand2, Final_Hand2, Final_Deck2, 0), 
-  write('depoisdodraw'),
-  pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0),
-  write('initgame')
+  getHand(Deck1, Res_Hand1, Final_Hand1, Final_Deck1, 0),
+  getHand(Deck2, Res_Hand2, Final_Hand2, Final_Deck2, 0), 
+  pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0)
   .
   
+
 
 pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, DiscardedWind):-
   clearScreen(50),
   write('Player 1'), nl, nl,
 
   drawTab(INITIALBOARD, 0), !,
-  nl, nl, 
-  printHand(Hand1, 0),
+  nl, nl,
+  write('Pieces you can play:  '), nl, 
+  printHand(Hand1, 0), nl,
 
-  write('Piece to be Played:'), read(Piece), nl,
-  write('Row:'), read(Row), nl,
-  write('Column:'), read(Column), nl,
+  write('Other Options: '), nl,
+  write('6. Pass this turn '), nl, nl,
 
-  getListElemAt(Piece, Hand1, Piece1),
-  setMatrixElemAtWith(Row, Column, Piece1, INITIALBOARD, Result),
+  write('What do you wish to do?'), 
+  read(Choice), nl,
   
-  getHand()
+  if(Choice<5, playpiece(Choice, INITIALBOARD, Deck1, Hand1, ResultingBoard, ResultingHand1, ResultingDeck1), 
+    passturn(INITIALBOARD, ResultingBoard, Hand1, ResultingHand1, Deck1, ResultingDeck1)),
 
   clearScreen(50),
   write('Player 2'), nl, nl,
 
-  drawTab(Result, 0), !,
+  drawTab(ResultingBoard, 0), !,
   nl, nl,
-  write('Piece to be Played:'), read(Piece1), nl,
-  write('Row:'), read(Row1), nl,
-  write('Column:'), read(Column1), nl,
+  printHand(Hand2, 0), nl,
 
-  setMatrixElemAtWith(Row1, Column1, Piece1, Result, Result1),
+  write('Other Options: '), nl,
+  write('6. Pass this turn '), nl, nl,
 
-  pvpgamingcycle(Result1).
+  write('What do you wish to do?'), 
+  read(Choice2), nl,
+  
+  if(Choice2<5, playpiece(Choice2, ResultingBoard, Deck2, Hand2, ResultingBoard2, ResultingHand2, ResultingDeck2), 
+    passturn(ResultingBoard, ResultingBoard2, Hand2, ResultingHand2, Deck2, ResultingDeck2)),
+
+  pvpgamingcycle(ResultingBoard2, ResultingDeck1, ResultingDeck2, ResultingHand1, ResultingHand2, Stones1, Stones1, DiscardedWind).
 
 
 
+playpiece(Choice, INITIALBOARD, Deck, Hand, ResultingBoard, ResultingHand, ResultingDeck) :-
+  
+  write('Row:'), read(Row), nl,
+  write('Column:'), read(Column), nl,
 
 
+  getListElemAt(Choice, Hand, Piece),
+
+  if((Row == 4, Column == 4 ), 
+    setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, ResultingMatrix), 
+
+    (errorcycle(Row, Column, INITIALBOARD, FinalRow, FinalCol),
+    setMatrixElemAtWith(FinalRow, FinalColumn, Piece, INITIALBOARD, ResultingMatrix)
+    )),
+
+
+  select(Piece, Hand, Hand1_after),
+  getHand(Deck, Hand1_after, Final_Hand, Final_Deck, 0),
+  
+
+  ResultingBoard = ResultingMatrix,
+  ResultingHand = Final_Hand,
+  ResultingDeck = Final_Deck.
+
+passturn(INITIALBOARD, ResultingBoard, Initial_Hand, ResultingHand, Initial_Deck, ResultingDeck):-
+  ResultingBoard = INITIALBOARD,
+  ResultingHand = Initial_Hand,
+  ResultingDeck = Initial_Deck.
+
+
+errorcycle(Row, Column, Board, FinalRow, FinalCol):-
+  !,emptyarea(Row, Column, Board),
+  
+  write('Row:'), read(NewRow), nl,
+  write('Column:'), read(NewColumn), nl,
+
+  FinalRow = NewRow,
+  FinalCol = NewCol,
+  errorcycle(NewRow, NewColumn, Board).
+
+emptyarea(Row, Col, Board):- 
+  getMatrixElemAt((Row + 1), Col, Board, Elem1),
+  getMatrixElemAt((Row - 1), Col, Board, Elem2),
+  getMatrixElemAt(Row, (Col + 1), Board, Elem3), 
+  getMatrixElemAt(Row, (Col - 1), Board, Elem4),
+  
+  !, (Elem1==sun; Elem1==moon; Elem1==empty),
+  !, (Elem2==sun; Elem2==moon; Elem2==empty),
+  !, (Elem3==sun; Elem3==moon; Elem3==empty),
+  !, (Elem4==sun; Elem4==moon; Elem4==empty).
 
 drawTitle:-
   nl,

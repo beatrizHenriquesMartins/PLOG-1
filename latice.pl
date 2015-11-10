@@ -221,9 +221,10 @@ menu:-
   repeat,
   write('                          '),nl,
   write('   1. Play '),nl,
-  write('   3. Quit             '),nl,
+  write('   2. Instructions '),nl,
+  write('   4. Quit             '),nl,
   write('enter your choice:'), nl,
-  read(Choice), nl, Choice > 0, Choice =< 2,
+  read(Choice), nl, Choice > 0, Choice =< 4,
   doit(Choice).
 
 
@@ -231,7 +232,15 @@ menu:-
 doit(1):-
   initgame.
 
-doit(2):- !.
+doit(2):-
+  write('********INSTRUCTIONS********'), nl, nl,
+  write('The goal is to be the first player to finish all of his tiles.'), nl,
+  write(' The first piece must be played in the center of the board.'), nl,
+  write('After that, a piece can only be played non diagonally adjacent to another placed piece.'),
+  nl, nl, nl, nl,
+  menu.
+  
+doit(4):- !.
 
 initgame:-
 
@@ -240,11 +249,23 @@ initgame:-
   perm_aleatoria(Deck, Deck_Res),
   divideDeck(Deck_Res, Deck1, Deck2, 82),
   getHand(Deck1, Res_Hand1, Final_Hand1, Final_Deck1, 0),
-  getHand(Deck2, Res_Hand2, Final_Hand2, Final_Deck2, 0), 
-  pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0)
+  getHand(Deck2, Res_Hand2, Final_Hand2, Final_Deck2, 0),
+
+  %pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0),
+  pvpgamingcycle(Tab, Final_Deck1, [], Final_Hand1, [], Stones1, Stones2, 0)
+
   .
   
 
+pvpgamingcycle(INITIALBOARD, Deck1, [], Hand1, [], Stones1, Stones2, DiscardedWind):-
+  nl,
+  write('player 2 wins!'), nl,
+  menu.  
+
+pvpgamingcycle(INITIALBOARD, [], Deck2, [], Hand2, Stones1, Stones2, DiscardedWind):-
+  nl,
+  write('player 1 wins!'), nl,
+  menu.
 
 pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, DiscardedWind):-
   clearScreen(50),
@@ -261,7 +282,8 @@ pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, Disca
   write('What do you wish to do?'), 
   read(Choice), nl,
   
-  if(Choice<5, playpiece(Choice, INITIALBOARD, Deck1, Hand1, ResultingBoard, ResultingHand1, ResultingDeck1), 
+ 
+  if(Choice < 5, playpiece(Choice, INITIALBOARD, Deck1, Hand1, ResultingBoard, ResultingHand1, ResultingDeck1), 
     passturn(INITIALBOARD, ResultingBoard, Hand1, ResultingHand1, Deck1, ResultingDeck1)),
 
   clearScreen(50),
@@ -284,6 +306,9 @@ pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, Disca
 
 
 
+
+
+
 playpiece(Choice, INITIALBOARD, Deck, Hand, ResultingBoard, ResultingHand, ResultingDeck) :-
   
   write('Row:'), read(Row), nl,
@@ -292,13 +317,9 @@ playpiece(Choice, INITIALBOARD, Deck, Hand, ResultingBoard, ResultingHand, Resul
 
   getListElemAt(Choice, Hand, Piece),
 
-  if((Row == 4, Column == 4 ), 
-    setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, ResultingMatrix), 
+  write('passaantes'),
 
-    (errorcycle(Row, Column, INITIALBOARD, FinalRow, FinalCol),
-    setMatrixElemAtWith(FinalRow, FinalColumn, Piece, INITIALBOARD, ResultingMatrix)
-    )),
-
+  setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, ResultingMatrix),
 
   select(Piece, Hand, Hand1_after),
   getHand(Deck, Hand1_after, Final_Hand, Final_Deck, 0),
@@ -308,32 +329,12 @@ playpiece(Choice, INITIALBOARD, Deck, Hand, ResultingBoard, ResultingHand, Resul
   ResultingHand = Final_Hand,
   ResultingDeck = Final_Deck.
 
-passturn(INITIALBOARD, ResultingBoard, Initial_Hand, ResultingHand, Initial_Deck, ResultingDeck):-
+passturn(INITIALBOARD, ResultingBoard, Initial_Hand, ResultingHand, Initial_Deck, ResultingDeck) :-
   ResultingBoard = INITIALBOARD,
   ResultingHand = Initial_Hand,
   ResultingDeck = Initial_Deck.
 
 
-errorcycle(Row, Column, Board, FinalRow, FinalCol):-
-  !,emptyarea(Row, Column, Board),
-  
-  write('Row:'), read(NewRow), nl,
-  write('Column:'), read(NewColumn), nl,
-
-  FinalRow = NewRow,
-  FinalCol = NewCol,
-  errorcycle(NewRow, NewColumn, Board).
-
-emptyarea(Row, Col, Board):- 
-  getMatrixElemAt((Row + 1), Col, Board, Elem1),
-  getMatrixElemAt((Row - 1), Col, Board, Elem2),
-  getMatrixElemAt(Row, (Col + 1), Board, Elem3), 
-  getMatrixElemAt(Row, (Col - 1), Board, Elem4),
-  
-  !, (Elem1==sun; Elem1==moon; Elem1==empty),
-  !, (Elem2==sun; Elem2==moon; Elem2==empty),
-  !, (Elem3==sun; Elem3==moon; Elem3==empty),
-  !, (Elem4==sun; Elem4==moon; Elem4==empty).
 
 drawTitle:-
   nl,

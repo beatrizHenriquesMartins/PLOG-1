@@ -293,6 +293,7 @@ pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, Disca
 
   drawTab(ResultingBoard, 0), !,
   nl, nl,
+  write('Pieces you can play:  '), nl,
   printHand(Hand2, 0), nl,
 
   write('Other Options: '), nl,

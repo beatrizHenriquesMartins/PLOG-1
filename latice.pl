@@ -222,7 +222,7 @@ menu:-
   write('                          '),nl,
   write('   1. Play '),nl,
   write('   2. Instructions '),nl,
-  write('   4. Quit             '),nl,
+  write('   4. Quit             '),nl, nl, nl,
   write('enter your choice:'), nl,
   read(Choice), nl, Choice > 0, Choice =< 4,
   doit(Choice).
@@ -233,10 +233,12 @@ doit(1):-
   initgame.
 
 doit(2):-
+  clearScreen(50),
   write('********INSTRUCTIONS********'), nl, nl,
   write('The goal is to be the first player to finish all of his tiles.'), nl,
-  write(' The first piece must be played in the center of the board.'), nl,
-  write('After that, a piece can only be played non diagonally adjacent to another placed piece.'),
+  write(' The first piece must be played in the center of the board (row 4, column 4).'), nl,
+  write('After that, a piece can only be played non diagonally adjacent to another placed piece.'), nl,
+  write('When you play a piece it must match the letter or the symbol of one or more adjacent pieces.'),
   nl, nl, nl, nl,
   menu.
   
@@ -252,7 +254,7 @@ initgame:-
   getHand(Deck2, Res_Hand2, Final_Hand2, Final_Deck2, 0),
 
   %pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0),
-  pvpgamingcycle(Tab, Final_Deck1, [], Final_Hand1, [], Stones1, Stones2, 0)
+  pvpgamingcycle(Tab, Final_Deck1, Final_Deck2, Final_Hand1, Final_Hand2, Stones1, Stones2, 0)
 
   .
   
@@ -370,17 +372,6 @@ drawList([H | T]) :-
 %%desenhar tabuleiro ^
 
 latice:-
+  clearScreen(20), 
   drawTitle,
   menu.
-
-%%desenhar tabuleiro
-%%decidir jogador
-%%ler inputs
-%%verificar inputs
-%%se ok->atualizar e imprimir tabuleiro
-%%se ko->pedir nova jogada
-%%terminar ciclo na condiçao de vitoria
-
-
-
-

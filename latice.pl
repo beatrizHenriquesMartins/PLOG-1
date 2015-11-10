@@ -279,7 +279,7 @@ pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, Disca
   printHand(Hand1, 0), nl,
 
   write('Other Options: '), nl,
-  write('6. Pass this turn '), nl, nl,
+  write('5. Pass this turn '), nl, nl,
 
   write('What do you wish to do?'), 
   read(Choice), nl,

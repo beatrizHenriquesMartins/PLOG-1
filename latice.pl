@@ -297,7 +297,7 @@ pvpgamingcycle(INITIALBOARD, Deck1, Deck2, Hand1, Hand2, Stones1, Stones2, Disca
   printHand(Hand2, 0), nl,
 
   write('Other Options: '), nl,
-  write('6. Pass this turn '), nl, nl,
+  write('5. Pass this turn '), nl, nl,
 
   write('What do you wish to do?'), 
   read(Choice2), nl,
@@ -320,7 +320,6 @@ playpiece(Choice, INITIALBOARD, Deck, Hand, ResultingBoard, ResultingHand, Resul
 
   getListElemAt(Choice, Hand, Piece),
 
-  write('passaantes'),
 
   setMatrixElemAtWith(Row, Column, Piece, INITIALBOARD, ResultingMatrix),
 
@@ -373,6 +372,6 @@ drawList([H | T]) :-
 %%desenhar tabuleiro ^
 
 latice:-
-  clearScreen(20), 
+  clearScreen(30), 
   drawTitle,
   menu.

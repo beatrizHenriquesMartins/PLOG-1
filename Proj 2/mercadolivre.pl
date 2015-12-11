@@ -21,9 +21,10 @@ mercado(maca, 1, 400).
 mercado(melancia, 3, 300).
 mercado(natas, 4, 10).
 mercado(ovos, 3, 150).
-ingrediente(pepin, 2, 420).
-ingrediente(pera, 1, 700).
-ingrediente(pescada, 6, 107).
-ingrediente(porco, 11, 78).
-ingrediente(tomate, 4, 300).
-ingrediente(vagens, 3, 89).
+mercado(pepin, 2, 420).
+mercado(pera, 1, 700).
+mercado(peru, 3, 800).
+mercado(pescada, 6, 107).
+mercado(porco, 11, 78).
+mercado(tomate, 4, 300).
+mercado(vagens, 3, 89).

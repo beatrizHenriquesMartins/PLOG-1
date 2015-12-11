@@ -1,15 +1,16 @@
-:-
-
 custo_prato(NomePrato, Custo):-
   get_ingredientes(NomePrato, Ingredientes),
   get_custo(Ingredientes, Custo).
 
-get_ingredientes(Nome, Lista):-
-  sopa(Nome, Lista).
-get_ingredientes(Nome, Lista):-
-  carne(Nome, Lista).
-get_ingredientes(Nome, Lista):-
-  peixe(Nome, Lista).
+get_ingredientes(Sopa, Lista):-
+  sopa(Sopa, Lista1),
+  append([], Lista1, Lista).
+get_ingredientes(Carne, Lista):-
+  carne(Carne, Lista1),
+  append([], Lista1, Lista).
+get_ingredientes(Peixe, Lista):-
+ peixe(Peixe, Lista1),
+ append([], Lista1, Lista).
 
 get_custo(Lista, Custo):-
   get_custo(Lista, 0, Custo).

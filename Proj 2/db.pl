@@ -12,7 +12,7 @@ sopa(leguminosa_favas, [favas, cebola, alho, espinafres]).
 
 carne(strogonoff, [peru, natas, cogumelos, esparguete]).
 carne(estufada, [porco, arroz, batata]).
-carne(bife_peru, [peru, arroz].
+carne(bife_peru, [peru, arroz]).
 carne(frango_assado, [frango, batata, arroz]).
 
 peixe(peixe_abrotea, [abrotea, batata]).
@@ -52,6 +52,8 @@ massa(esparguete).
 acompanhamento(arroz).
 acompanhamento(batata).
 acompanhamento(massa(_)).
+
+
 
 
 

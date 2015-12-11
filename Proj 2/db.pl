@@ -1,12 +1,14 @@
-% Base de conhecimento %
+% Base de conhecimento
 
-%Sopas - sopa(nome, [ingredientes])
+% Sopas - sopa(nome, [ingredientes])
 
 sopa(sopa_batata, [batata, cebola, alho]).
 sopa(legumes, [couve, cenoura, couve_branca, abobora, vagens, alho]).
 sopa(leguminosa_feijao, [feijao, batata, couve, cenoura, cebola]).
 sopa(leguminosa_favas, [favas, cebola, alho, espinafres]).
 
+
+% Pratos - carne/peixe(nome, [ingredientes])
 
 carne(strogonoff, [peru, natas, cogumelos, esparguete]).
 carne(estufada, [porco, arroz, batata]).
@@ -17,11 +19,15 @@ peixe(peixe_abrotea, [abrotea, batata]).
 peixe(bacalhau_pure, [bacalhau, batata, leite]).
 peixe(filetes, [pescada, batata, ovos]).
 
+% Salada
+
 salada(alface).
 salada(cebola).
 salada(cenoura).
 salada(pepin).
 salada(tomate).
+
+% Sobremesa
 
 fruta(banan).
 fruta(laranja).
@@ -41,6 +47,18 @@ doce(iogurte).
 doce(leite_creme).
 doce(pudim).
 
+massa(esparguete).
+
+acompanhamento(arroz).
+acompanhamento(batata).
+acompanhamento(massa(_)).
+
+
+
+
+
+
+% Ingrediente
 
 ingrediente(abobora).
 ingrediente(abrotea).

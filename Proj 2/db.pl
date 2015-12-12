@@ -10,14 +10,14 @@ sopa(leguminosa_favas, [favas, cebola, alho, espinafres]).
 
 % Pratos - carne/peixe(nome, [ingredientes])
 
-carne(strogonoff, [peru, natas, cogumelos, esparguete]).
-carne(estufada, [porco, arroz, batata]).
-carne(bife_peru, [peru, arroz]).
-carne(frango_assado, [frango, batata, arroz]).
+prato_principal(carne, estrogonoff, [peru, natas, cogumelos, esparguete]).
+prato_principal(carne, estufada, [porco, arroz, batata]).
+prato_principal(carne, bife_peru, [peru, arroz]).
+prato_principal(carne, frango_assado, [frango, batata, arroz]).
 
-peixe(peixe_abrotea, [abrotea, batata]).
-peixe(bacalhau_pure, [bacalhau, batata, leite]).
-peixe(filetes, [pescada, batata, ovos]).
+prato_principal(peixe, peixe_abrotea, [abrotea, batata]).
+prato_principal(peixe, bacalhau_pure, [bacalhau, batata, leite]).
+prato_principal(peixe, filetes, [pescada, batata, ovos]).
 
 % Salada
 

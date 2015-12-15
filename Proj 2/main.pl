@@ -3,6 +3,5 @@
 %:-use_module(library(random)).
 %:-use_module(library(system)).
 :-consult(utils).
-:-consult(db).
 :-consult(mercadolivre).
 

@@ -12,28 +12,28 @@ mercado(vagens, 3, 489).         %7
 
 
 %carne
-mercado(frango, 5, 351).      %8
+mercado(frango, 5, 151).      %8
 mercado(porco,  7, 281).      %9
-mercado(bifes,  8, 493).   %10
-mercado(panados, 3, 307).   %11
-mercado(peru, 3, 800).    %12
+mercado(bifes,  8, 393).   %10
+mercado(panados, 3, 107).   %11
+mercado(peru, 4, 800).    %12
 
 
 %peixe
-mercado(abrotea, 1, 420).  %13
-mercado(pescada, 3, 387).   %14
+mercado(abrotea, 1, 120).  %13
+mercado(pescada, 3, 187).   %14
 mercado(salmao, 8, 233).    %15
-mercado(bacalhau, 5, 345).   %16
+mercado(bacalhau, 5, 45).   %16
  
 
 %bases prato principal
 %batata-1
-mercado(arroz, 1, 901).  %17
-mercado(massa, 1, 803).  %18
+mercado(arroz, 1, 300).  %17
+mercado(massa, 3, 200).  %18
 
 
 %saladas
-mercado(cenoura, 1, 300).   %19
+mercado(cenoura, 1, 150).   %19
 mercado(pepin, 2, 420).     %20
 mercado(tomate, 4, 300).    %21
 mercado(alface, 3, 901).    %22
